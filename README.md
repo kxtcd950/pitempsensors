@@ -29,3 +29,15 @@ The configuration snippet takes the form:
 * "mqttuser" and "mqttpass" are the username and password to use to authenticate to the MQTT broker.  You *do* use authentication on your broker, don't you?
 * "mqtttopic" is the topic under which the temperature values are written.  The format of the published data is "mqtttopic/human-name degreesC", where humanname is the name value of a device node's key in the "sensornames" mapping.
 
+## Environment
+This script assumes that you've configured your raspberry pi to have already loaded the necessary kernel modules to use the temperature sensors, and that the temperature sensors are correctly wired up to your raspberry pi.
+To load the kernel drivers into the kernel at boot time, simply insert the following line into ``` /boot/config.txt ```:
+``` dtoverlay=w1-gpio ```
+
+I've also added the following two lines into ``` /etc/modules-load.d/modules.conf ```
+```
+w1-gpio
+w1-therm
+```
+
+This should be enough to make the Rapsberry Pi load up and use the attached temperature sensors.
