@@ -55,8 +55,6 @@ if (devices.count == 0):
     print("Didn't find any devices.  Is the regex /"+mqttregex+"/ correct?\n")
     exit()
 
-print(sensornames)
-
 client.loop_start()
 
 while (1):
