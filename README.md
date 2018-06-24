@@ -27,5 +27,5 @@ The configuration snippet takes the form:
 * "sensornames" is a list of key: pair values mapping the computer generated sensor names into nice human readable names.  The key is the device filename and the value is the human readable name.
 * "mqttsrv" is the name (or IP address) of the MQTT server to publish the read values onto.
 * "mqttuser" and "mqttpass" are the username and password to use to authenticate to the MQTT broker.  You *do* use authentication on your broker, don't you?
-* "mqtttopic" is the topic under which the temperature values are written.  The format of the published data is "mqtttopic/human name degreesC".
+* "mqtttopic" is the topic under which the temperature values are written.  The format of the published data is "mqtttopic/human-name degreesC", where humanname is the name value of a device node's key in the "sensornames" mapping.
 
