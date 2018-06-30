@@ -23,7 +23,7 @@ The configuration snippet takes the form:
 }
 ```
 
-* "sensordir" and "sensorregex" are used to find the sensor devices; this is done by looking for all files in the directory associated with "sensordir" and applying the regex "sensorregex" to each filename.  Files which match are deemed to be sensors.
+* "sensordir" and "sensorregex" are used to find the sensor devices; this is done by looking for all files in the directory associated with "sensordir" and applying the regex "sensorregex" to each filename.  Files which match are deemed to be sensors.  These two items will default to ```"/sys/bus/w1/devices/"``` and ```"[0-9a-f]{2}-[0-9a-f]{12}"``` respectively.  If you don't mess with udev's confiuration, these two items' defaults will work fine.
 * "sensornames" is a list of key: pair values mapping the computer generated sensor names into nice human readable names.  The key is the device filename and the value is the human readable name.
 * "mqttsrv" is the name (or IP address) of the MQTT server to publish the read values onto.
 * "mqttuser" and "mqttpass" are the username and password to use to authenticate to the MQTT broker.  You *do* use authentication on your broker, don't you?
@@ -39,5 +39,8 @@ I've also added the following two lines into ``` /etc/modules-load.d/modules.con
 w1-gpio
 w1-therm
 ```
+This should be enough to make the Rapsberry Pi load up and use the attached temperature sensors.  If you change the default names of the temperature sensors, or their default position on the directory structure by changing udev, then use the ```sensordir``` and ```sensorregex``` config items to indicate to the script where and how to discover the device files. 
 
-This should be enough to make the Rapsberry Pi load up and use the attached temperature sensors.
+You'll also need to install paho.mqtt using:
+``` pip install paho-mqtt ```
+
