@@ -10,8 +10,17 @@ import json
 with open('config.json') as config:
     conf = json.load(config)
 
-sensordir=conf['sensordir']
-sensorregex=r''+conf["sensorregex"]
+# add defaults for sensor location and the pattern we use to discover them.
+# This simplifies the config for people who've not messed about with udev
+# but means the script can work for those which do.
+if 'sensordir' in conf:
+    sensordir=conf['sensordir']
+else:
+    sensordir='/sys/bus/w1/devices/'
+if 'sensorregex' in conf:
+    sensorregex=r''+conf["sensorregex"]
+else:
+    sensorregex=r'[0-9a-f]{2}-[0-9a-f]{12}'
 sensornames=conf['sensornames']
 mqttsrv=conf['mqttsrv']
 mqttuser=conf['mqttuser']
@@ -52,7 +61,7 @@ client.username_pw_set(mqttuser, mqttpass)
 client.connect(mqttsrv, 8883, 60)
 devices = get_device_list()
 if (devices.count == 0):
-    print("Didn't find any devices.  Is the regex /"+mqttregex+"/ correct?\n")
+    print("Didn't find any devices.  Are the directory and regex '"+sensordir+"', /"+mqttregex+"/ correct?\n")
     exit()
 
 client.loop_start()
