@@ -66,8 +66,12 @@ client.username_pw_set(mqttuser, mqttpass)
 client.connect(mqttsrv, 8883, 60)
 devices = get_device_list()
 if (len(devices) == 0):
-    print("Didn't find any devices.  Are the directory and regex '"+sensordir+"', /"+sensorregex+"/ correct?\n")
-    print("Also check if the device is connected correctly.\n");
+    print("Didn't find any devices.\n")
+    print("Are the directory and regex parameters correct?")
+    print("These parameters are currently set to:")
+    print(" sensordir: '"+sensordir+"'")
+    print(" sensorregex: /"+sensorregex+"/\n")
+    print("Also check if the device is connected correctly.");
     exit()
 
 client.loop_start()
