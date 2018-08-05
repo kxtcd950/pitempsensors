@@ -35,7 +35,12 @@ def on_connect(client,userdata,flags,rc):
     return
 
 def get_device_list():
-     return [[f,sensordir+f+'/w1_slave',-100.0] for f in os.listdir(sensordir) if re.match(sensorregex, f, re.I)]
+    if (os.path.isdir(sensordir) == False):
+        return []
+    dirs = [[f,sensordir+f+'/w1_slave',-100.0] for f in os.listdir(sensordir) if re.match(sensorregex, f, re.I)]
+    pruned_list = []
+    pruned_list[:] = (x for x in dirs if (os.path.exists(x[0]+"w1_slave") == True))
+    return pruned_list
 
 def get_temperature_raw(dev_file):
     f = open(dev_file, "r")
@@ -60,8 +65,9 @@ client.on_connect=on_connect
 client.username_pw_set(mqttuser, mqttpass)
 client.connect(mqttsrv, 8883, 60)
 devices = get_device_list()
-if (devices.count == 0):
-    print("Didn't find any devices.  Are the directory and regex '"+sensordir+"', /"+mqttregex+"/ correct?\n")
+if (len(devices) == 0):
+    print("Didn't find any devices.  Are the directory and regex '"+sensordir+"', /"+sensorregex+"/ correct?\n")
+    print("Also check if the device is connected correctly.\n");
     exit()
 
 client.loop_start()
