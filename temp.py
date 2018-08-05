@@ -31,13 +31,13 @@ if (mqtttopic[-1:] != '/'):
     mqtttopic += '/'
 
 def on_connect(client,userdata,flags,rc):
-    print("Connected to mqtt server!\n")
+    print("Connected to mqtt server!")
     return
 
 def get_device_list():
     if (os.path.isdir(sensordir) == False):
         return []
-    dirs = [[f,sensordir+f+'/w1_slave',-100.0] for f in os.listdir(sensordir) if (re.match(sensorregex, f, re.I) and (os.path.exists(f+"w1_slave") == True))]
+    dirs = [[f,sensordir+f+'/w1_slave',-100.0] for f in os.listdir(sensordir) if (re.match(sensorregex, f, re.I) and (os.path.isfile(sensordir+f+"/w1_slave") == True))]
     return dirs
 
 def get_temperature_raw(dev_file):
@@ -79,7 +79,7 @@ while (1):
         thistemp = get_temperature(device[1])
         repval = round(thistemp[0] * 2) / 2
         if (repval != device[2]):
-            client.publish(mqtttopic+sensornames[device[0]], str(repval))
+            client.publish(mqtttopic+sensornames[device[0]]+"/temperature", str(repval))
             device[2] = repval
     sleep(10)
 
