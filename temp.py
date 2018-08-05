@@ -37,10 +37,8 @@ def on_connect(client,userdata,flags,rc):
 def get_device_list():
     if (os.path.isdir(sensordir) == False):
         return []
-    dirs = [[f,sensordir+f+'/w1_slave',-100.0] for f in os.listdir(sensordir) if re.match(sensorregex, f, re.I)]
-    pruned_list = []
-    pruned_list[:] = (x for x in dirs if (os.path.exists(x[0]+"w1_slave") == True))
-    return pruned_list
+    dirs = [[f,sensordir+f+'/w1_slave',-100.0] for f in os.listdir(sensordir) if (re.match(sensorregex, f, re.I) and (os.path.exists(f+"w1_slave") == True))]
+    return dirs
 
 def get_temperature_raw(dev_file):
     f = open(dev_file, "r")
